@@ -47,7 +47,6 @@ setup.querySelector('.setup-similar').classList.remove('hidden');
 // Interaction
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = setup.querySelector('.setup-close');
-var setupClose = setup.querySelector('.setup-close');
 
 var onPopupEscPress = function (evt) {
   if (evt.currentTarget.activeElement.className !== 'setup-user-name' && evt.keyCode === 27) {
@@ -79,7 +78,7 @@ setupClose.addEventListener('click', function () {
   hideSetup();
 });
 
-setupClose.addEventListener('keydown', function(evt) {
+setupClose.addEventListener('keydown', function (evt) {
   if (evt.keyCode === 13) {
     hideSetup();
   }
