@@ -16,29 +16,29 @@ window.setupConfiguration = (function () {
       coatColor: COAT_COLORS[Math.floor(Math.random() * COAT_COLORS.length)],
       eyesColor: EYES_COLORS[Math.floor(Math.random() * EYES_COLORS.length)]
     };
-    return wizard
-  }
+    return wizard;
+  };
 
   var renderWizard = function (wizard, template) {
-      var wizardElement = template.cloneNode(true);
-      wizardElement.querySelector('.setup-similar-label').textContent = wizard['name'];
-      wizardElement.querySelector('.wizard-coat').style.fill = wizard['coatColor'];
-      wizardElement.querySelector('.wizard-eyes').style.fill = wizard['eyesColor'];
-      return wizardElement;
+    var wizardElement = template.cloneNode(true);
+    wizardElement.querySelector('.setup-similar-label').textContent = wizard['name'];
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard['coatColor'];
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard['eyesColor'];
+    return wizardElement;
   };
 
   return {
-    renderWizardsList:  function () {
+    renderWizardsList: function () {
       var wizardsListFragment = document.createDocumentFragment();
       var wizardTemplate = document.querySelector('#similar-wizard-template').content;
       for (var i = 0; i < WIZARD_AMOUNT; i++) {
-        var wizard =  getRandomWizard();
+        var wizard = getRandomWizard();
         var wizardFragment = renderWizard(wizard, wizardTemplate);
         wizardsListFragment.appendChild(wizardFragment);
       }
       return wizardsListFragment;
     }
-  }
+  };
 })();
 
 window.setupInteraction = (function () {
@@ -64,18 +64,18 @@ window.setupInteraction = (function () {
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
-  return{
+  return {
     onSetupOpenClick: function (evt) {
-      if (evt.type === MOUSE_CLICK_EVENT || (evt.keyCode === ENTER_KEY_CODE  &&  evt.type === KEYDOWN_EVENT)) {
+      if (evt.type === MOUSE_CLICK_EVENT || (evt.keyCode === ENTER_KEY_CODE && evt.type === KEYDOWN_EVENT)) {
         showSetup();
       }
     },
     onSetupCloseClick: function (evt) {
-      if (evt.type === MOUSE_CLICK_EVENT || (evt.keyCode === ENTER_KEY_CODE  &&  evt.type === KEYDOWN_EVENT)) {
+      if (evt.type === MOUSE_CLICK_EVENT || (evt.keyCode === ENTER_KEY_CODE && evt.type === KEYDOWN_EVENT)) {
         hideSetup();
       }
     }
-  }
+  };
 })();
 
 window.playerInteraction = (function () {
@@ -83,34 +83,36 @@ window.playerInteraction = (function () {
   var getNextColor = function (curColor, colorsArray) {
     var curColorIndex = colorsArray.indexOf(curColor);
     var nextColorIndex = curColorIndex + 1;
-    if (nextColorIndex === colorsArray.length){
+    if (nextColorIndex === colorsArray.length) {
       nextColorIndex = 0;
     }
-    return colorsArray[nextColorIndex]
+    return colorsArray[nextColorIndex];
   };
 
   var convertRGBtoHEX = function (rgb) {
-    if (/^#[0-9A-F]{6}$/i.test(rgb)) return rgb;
-    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-    function hex(x) {
-        return ('0' + parseInt(x).toString(16)).slice(-2);
+    if (/^#[0-9A-F]{6}$/i.test(rgb)) {
+      return rgb;
     }
+    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    var hex = function (x) {
+      return ('0' + parseInt(x, 10).toString(16)).slice(-2);
+    };
     return '#' + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
   }
 
   return {
-    onwWzardEyesCoatClick:  function (evt) {
+    onwWzardEyesCoatClick: function (evt) {
       var curColor = evt.currentTarget.style.fill;
       var colorsArray = evt.currentTarget.classList.contains('wizard-coat') ? COAT_COLORS : EYES_COLORS;
       var nextColor = getNextColor(curColor, colorsArray);
       evt.currentTarget.style.fill = nextColor;
     },
-    onwWzardFireballClick:  function (evt) {
+    onwWzardFireballClick: function (evt) {
       var curColor = getComputedStyle(evt.currentTarget).backgroundColor;
       var nextColor = getNextColor(convertRGBtoHEX(curColor), FIREBALL_COLORS);
       evt.currentTarget.style.backgroundColor = nextColor;
     }
-  }
+  };
 })();
 
 var setup = document.querySelector('.setup');
